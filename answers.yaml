@@ -1,0 +1,18 @@
+Welcome:
+  lang: en_US
+Keyboard:
+  layout: us
+Installpath:
+  path: posm
+Network:
+  accept-default: yes
+Proxy:
+  proxy: ""
+Mirror:
+  mirror: "http://us.archive.ubuntu.com"
+Filesystem:
+  guided: yes
+  guided-index: 0
+InstallProgress:
+  reboot: yes
+

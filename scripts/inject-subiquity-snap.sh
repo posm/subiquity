@@ -97,6 +97,54 @@ if [ "$edit_filesystem" = "yes" ]; then
     add_overlay old_filesystem new_filesystem
 fi
 
+mkdir -p new_iso/casper/posm
+cp ~seth/src/posm/posm-build/live/cd/casper/filesystem.squashfs new_iso/casper/posm/root.squashfs
+cat - <<EOF > new_installer/lib/systemd/system/media-posm.mount
+[Mount]
+What=/cdrom/casper/posm/root.squashfs
+Where=/media/posm
+Type=squashfs
+Options=ro
+EOF
+
+ln -s ../media-posm.mount new_installer/lib/systemd/system/local-fs.target.wants/
+
+cat - <<EOF > new_iso/casper/posm/answers.yaml
+Welcome:
+  lang: en_US
+Keyboard:
+  layout: us
+Installpath:
+  path: posm
+Network:
+  accept-default: yes
+Proxy:
+  proxy: ""
+Mirror:
+  mirror: "http://us.archive.ubuntu.com"
+Filesystem:
+  guided: yes
+  guided-index: 0
+InstallProgress:
+  reboot: yes
+EOF
+
+cat - <<EOF > new_installer/etc/systemd/system/subiquity-answers.service
+[Unit]
+Description=Initialize subiquity answers
+After=cdrom.mount
+
+[Service]
+Type=oneshot
+ExecStart=/bin/mkdir /subiquity_config
+ExecStart=/bin/cp /cdrom/casper/posm/answers.yaml /subiquity_config/
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
+mkdir -p new_installer/etc/systemd/system/multi-user.target.wants/
+ln -s ../subiquity-answers.service new_installer/etc/systemd/system/multi-user.target.wants/
 
 if [ -n "$cmds" ]; then
     bash -c "$cmds"

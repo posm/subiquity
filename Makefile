@@ -59,4 +59,9 @@ probert:
 clean:
 	./debian/rules clean
 
+custom.iso:
+	# snapcraft clean
+	# snapcraft snap --output subiquity_test.snap
+	sudo ./scripts/inject-subiquity-snap.sh  ../bionic-live-server-amd64.iso subiquity_test.snap ../custom.iso
+
 .PHONY: flake8 lint

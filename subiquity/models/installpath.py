@@ -44,8 +44,9 @@ class InstallpathModel(object):
             cmdline = [(_('Install from cli provided sources'), 'cmdline')]
         return cmdline + [
             (_('Install Ubuntu'),                 'ubuntu'),
-            (_('Install MAAS bare-metal cloud (region)'), 'maas_region'),
-            (_('Install MAAS bare-metal cloud (rack)'),   'maas_rack'),
+            # (_('Install MAAS bare-metal cloud (region)'), 'maas_region'),
+            # (_('Install MAAS bare-metal cloud (rack)'),   'maas_rack'),
+            (_('Install POSM'), 'posm'),
         ]
 
     @property
@@ -54,6 +55,8 @@ class InstallpathModel(object):
             'ubuntu': ['cp:///media/filesystem'],
             'maas_region': ['cp:///media/region'],
             'maas_rack': ['cp:///media/rack'],
+            # TODO install from a tarball instead; no reason to have it be mountable
+            'posm': ['cp:///media/posm'],
             'cmdline': self.cmdline_sources}
         return {self.path + "%02d" % n: u
                 for n, u in enumerate(src_map[self.path])}

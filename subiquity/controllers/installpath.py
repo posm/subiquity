@@ -37,6 +37,8 @@ class InstallpathController(BaseController):
             self.model.path = path
             if path == 'ubuntu':
                 self.install_ubuntu()
+            if path == 'posm':
+                self.install_posm()
             else:
                 self.model.update(self.answers)
                 self.signal.emit_signal('next-screen')
@@ -72,7 +74,7 @@ class InstallpathController(BaseController):
         self.ui.set_body(MAASView(self.model, self, title, excerpt))
 
     def install_maas_rack(self):
-        # show cack questions, seed model
+        # show rack questions, seed model
         title = "MAAS Rack Controller Setup"
         excerpt = _(
             "A MAAS rack controller provides services to machines provisioned "
@@ -85,4 +87,8 @@ class InstallpathController(BaseController):
 
     def setup_maas(self, result):
         self.model.update(result)
+        self.signal.emit_signal('next-screen')
+
+    def install_posm(self):
+        log.debug("Installing POSM path chosen.")
         self.signal.emit_signal('next-screen')

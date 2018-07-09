@@ -34,12 +34,12 @@ class Subiquity(Application):
             "Welcome",
             "Keyboard",
             "Installpath",
-            "Network",
-            "Proxy",
-            "Mirror",
+            # "Network",
+            # "Proxy",
+            # "Mirror",
             "Filesystem",
-            "Identity",
-            "SnapList",
+            # "Identity",
+            # "SnapList",
             "InstallProgress",
     ]
 
