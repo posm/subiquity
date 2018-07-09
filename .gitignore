@@ -68,3 +68,7 @@ venv
 
 # installer isos
 *.iso
+prime/
+snap/
+stage/
+.subiquity/
