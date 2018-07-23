@@ -13,6 +13,12 @@ Mirror:
 Filesystem:
   guided: yes
   guided-index: 0
+Identity:
+  realname: POSM
+  username: posm
+  hostname: posm
+  # posm
+  password: '$1$opossum!$PjO/OtFsw5f3/wbGBYEBt/'
 InstallProgress:
   reboot: yes
 

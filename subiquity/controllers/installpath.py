@@ -91,4 +91,11 @@ class InstallpathController(BaseController):
 
     def install_posm(self):
         log.debug("Installing POSM path chosen.")
+        self.model.curtin['power_state'] = {
+            'mode': 'reboot'
+        }
+        self.model.curtin['late_commands'] = {
+            '99-finalize': ['curtin', 'in-target', '--', '/root/posm-build/kickstart/scripts/bootstrap.sh',
+                            'hotspot', 'captive'],
+        }
         self.signal.emit_signal('next-screen')

@@ -72,3 +72,5 @@ prime/
 snap/
 stage/
 .subiquity/
+.vscode/
+subiquity_test.snap

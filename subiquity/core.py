@@ -38,7 +38,7 @@ class Subiquity(Application):
             # "Proxy",
             # "Mirror",
             "Filesystem",
-            # "Identity",
+            "Identity",
             # "SnapList",
             "InstallProgress",
     ]

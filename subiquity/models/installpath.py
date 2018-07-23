@@ -55,8 +55,7 @@ class InstallpathModel(object):
             'ubuntu': ['cp:///media/filesystem'],
             'maas_region': ['cp:///media/region'],
             'maas_rack': ['cp:///media/rack'],
-            # TODO install from a tarball instead; no reason to have it be mountable
-            'posm': ['cp:///media/posm'],
+            'posm': ['file:///cdrom/casper/posm/root.tgz'],
             'cmdline': self.cmdline_sources}
         return {self.path + "%02d" % n: u
                 for n, u in enumerate(src_map[self.path])}

@@ -98,18 +98,9 @@ if [ "$edit_filesystem" = "yes" ]; then
 fi
 
 mkdir -p new_iso/casper/posm
-cp ~seth/src/posm/posm-build/live/cd/casper/filesystem.squashfs new_iso/casper/posm/root.squashfs
-cat - <<EOF > new_installer/lib/systemd/system/media-posm.mount
-[Mount]
-What=/cdrom/casper/posm/root.squashfs
-Where=/media/posm
-Type=squashfs
-Options=ro
-EOF
+cp ~seth/src/posm/posm-build/live/posm.tgz new_iso/casper/posm/root.tgz
 
-ln -s ../media-posm.mount new_installer/lib/systemd/system/local-fs.target.wants/
-
-cat - <<EOF > new_iso/casper/posm/answers.yaml
+cat - << "EOF" > new_iso/casper/posm/answers.yaml
 Welcome:
   lang: en_US
 Keyboard:
@@ -125,11 +116,16 @@ Mirror:
 Filesystem:
   guided: yes
   guided-index: 0
-InstallProgress:
-  reboot: yes
+# TODO just set the hostname
+Identity:
+  realname: POSM
+  username: posm
+  hostname: posm
+  # posm
+  password: '$1$opossum!$PjO/OtFsw5f3/wbGBYEBt/'
 EOF
 
-cat - <<EOF > new_installer/etc/systemd/system/subiquity-answers.service
+cat - << EOF > new_installer/etc/systemd/system/subiquity-answers.service
 [Unit]
 Description=Initialize subiquity answers
 After=cdrom.mount
@@ -163,6 +159,8 @@ fi
 
 rm new_iso/casper/installer.squashfs
 mksquashfs new_installer new_iso/casper/installer.squashfs
+
+rm -rf new_iso/casper/maas
 
 xorriso -as mkisofs -r -checksum_algorithm_iso md5,sha1 \
 	-V Ubuntu\ custom\ amd64 \
