@@ -112,7 +112,7 @@ Network:
 Proxy:
   proxy: ""
 Mirror:
-  mirror: "http://us.archive.ubuntu.com"
+  mirror: "file:///mnt/cdrom"
 Filesystem:
   guided: yes
   guided-index: 0
@@ -123,6 +123,8 @@ Identity:
   hostname: posm
   # posm
   password: '$1$opossum!$PjO/OtFsw5f3/wbGBYEBt/'
+InstallProgress:
+  reboot: no
 EOF
 
 cat - << EOF > new_installer/etc/systemd/system/subiquity-answers.service
