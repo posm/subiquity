@@ -141,6 +141,9 @@ ExecStart=/bin/cp /cdrom/casper/posm/answers.yaml /subiquity_config/
 WantedBy=multi-user.target
 EOF
 
+rm -rf new_installer/lib/systemd/system/media-region.*
+rm -rf new_installer/lib/systemd/system/media-rack.*
+
 mkdir -p new_installer/etc/systemd/system/multi-user.target.wants/
 ln -s ../subiquity-answers.service new_installer/etc/systemd/system/multi-user.target.wants/
 
