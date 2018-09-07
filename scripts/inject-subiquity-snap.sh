@@ -98,9 +98,9 @@ if [ "$edit_filesystem" = "yes" ]; then
 fi
 
 mkdir -p new_iso/casper/posm
-cp ~seth/src/posm/posm-build/live/posm.tgz new_iso/casper/posm/root.tgz
+cp $ROOTFS new_iso/casper/posm/root.tgz
 
-cat - << "EOF" > new_iso/casper/posm/answers.yaml
+cat - << EOF > new_iso/casper/posm/answers.yaml
 Welcome:
   lang: en_US
 Keyboard:
@@ -120,9 +120,9 @@ Filesystem:
 Identity:
   realname: POSM
   username: posm
-  hostname: posm
+  hostname: ${POSM_HOSTNAME:-posm}
   # posm
-  password: '$1$opossum!$PjO/OtFsw5f3/wbGBYEBt/'
+  password: '\$1\$opossum!\$PjO/OtFsw5f3/wbGBYEBt/'
 InstallProgress:
   reboot: no
 EOF
@@ -176,4 +176,5 @@ xorriso -as mkisofs -r -checksum_algorithm_iso md5,sha1 \
 	-eltorito-alt-boot -e boot/grub/efi.img -no-emul-boot \
 	-isohybrid-gpt-basdat -isohybrid-apm-hfsplus \
 	-isohybrid-mbr /usr/lib/ISOLINUX/isohdpfx.bin  \
+        -iso-level 3 \
 	new_iso/boot new_iso

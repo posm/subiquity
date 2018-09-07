@@ -59,9 +59,9 @@ probert:
 clean:
 	./debian/rules clean
 
-posm.iso:
+%.iso:
 	snapcraft clean
 	snapcraft snap --output subiquity_test.snap
-	sudo ./scripts/inject-subiquity-snap.sh ../bionic-live-server-amd64.iso subiquity_test.snap ../posm.iso
+	sudo POSM_HOSTNAME=$(POSM_HOSTNAME) ROOTFS=$(ROOTFS) ./scripts/inject-subiquity-snap.sh ../bionic-live-server-amd64.iso subiquity_test.snap ../$@
 
 .PHONY: flake8 lint
