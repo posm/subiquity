@@ -112,7 +112,7 @@ Network:
 Proxy:
   proxy: ""
 Mirror:
-  mirror: "file:///mnt/cdrom"
+  mirror: "file:///cdrom/"
 Filesystem:
   guided: yes
   guided-index: 0
