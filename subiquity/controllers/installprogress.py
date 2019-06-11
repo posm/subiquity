@@ -215,9 +215,9 @@ class InstallProgressController(BaseController):
         self.journal_listener_handle = None
         self._postinstall_prerequisites = {
             'install': False,
-            'ssh': False,
+            'ssh': True,
             'identity': False,
-            'snap': False,
+            'snap': True,
             }
         self._event_indent = ""
         self._event_syslog_identifier = 'curtin_event.%s' % (os.getpid(),)

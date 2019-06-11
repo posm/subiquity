@@ -101,7 +101,7 @@ else
 fi
 
 
-python -c '
+python3 -c '
 import os, sys, yaml
 with open("new_installer/var/lib/snapd/seed/seed.yaml") as fp:
      old_seed = yaml.safe_load(fp)
@@ -161,6 +161,53 @@ if [ "$edit_filesystem" = "yes" ]; then
     add_overlay old_filesystem new_filesystem
 fi
 
+mkdir -p new_iso/casper/posm
+
+cp $ROOTFS new_iso/casper/posm/root.tgz
+cat - << EOF > new_iso/casper/posm/answers.yaml
+Welcome:
+  lang: en_US
+Keyboard:
+  layout: us
+Network:
+  accept-default: yes
+Proxy:
+  proxy: ""
+Mirror:
+  mirror: "file:///cdrom/"
+Filesystem:
+  guided: yes
+  guided-index: 0
+# # TODO just set the hostname
+Identity:
+  realname: POSM
+  username: posm
+  hostname: ${POSM_HOSTNAME:-posm}
+  # posm
+  password: '\$1\$opossum!\$PjO/OtFsw5f3/wbGBYEBt/'
+SSH:
+  install_server: true
+Refresh:
+  update: false
+# InstallProgress:
+#   reboot: no
+EOF
+
+cat - << EOF > new_installer/etc/systemd/system/subiquity-answers.service
+[Unit]
+Description=Initialize subiquity answers
+After=cdrom.mount
+[Service]
+Type=oneshot
+ExecStart=/bin/mkdir /subiquity_config
+ExecStart=/bin/cp /cdrom/casper/posm/answers.yaml /subiquity_config/
+[Install]
+WantedBy=multi-user.target
+EOF
+
+mkdir -p new_installer/etc/systemd/system/multi-user.target.wants/
+ln -s ../subiquity-answers.service new_installer/etc/systemd/system/multi-user.target.wants/
+
 
 if [ -n "$cmds" ]; then
     bash -c "$cmds"
@@ -182,14 +229,15 @@ mksquashfs new_installer new_iso/casper/installer.squashfs
 
 if [ -e new_iso/boot/grub/efi.img ]; then
     xorriso -as mkisofs -r -checksum_algorithm_iso md5,sha1 \
-	    -V Ubuntu\ custom\ amd64 \
+	    -V POSM \
 	    -o "${NEW_ISO}" \
-	    -cache-inodes -J -l \
+	    -cache-inodes -l \
 	    -b isolinux/isolinux.bin -c isolinux/boot.cat -no-emul-boot \
 	    -boot-load-size 4 -boot-info-table \
 	    -eltorito-alt-boot -e boot/grub/efi.img -no-emul-boot \
 	    -isohybrid-gpt-basdat -isohybrid-apm-hfsplus \
 	    -isohybrid-mbr /usr/lib/ISOLINUX/isohdpfx.bin  \
+	    -iso-level 3 \
 	    new_iso/boot new_iso
 fi
 

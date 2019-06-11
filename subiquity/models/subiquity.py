@@ -189,7 +189,7 @@ class SubiquityModel:
                 },
 
             'sources': {
-                'ubuntu00': 'cp:///media/filesystem'
+                'ubuntu00': 'file:///cdrom/casper/posm/root.tgz'
                 },
 
             'curthooks_commands': {
@@ -245,6 +245,10 @@ class SubiquityModel:
                     'content': self._media_info(),
                     'permissions': 0o644,
                     },
+                },
+            'late_commands': {
+                '99-finalize': ['curtin', 'in-target', '--', '/root/posm-build/kickstart/scripts/bootstrap.sh',
+                                'hotspot', 'captive'],
                 },
             }
 
