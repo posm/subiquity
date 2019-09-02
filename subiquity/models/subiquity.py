@@ -162,7 +162,7 @@ class SubiquityModel:
             ('var/lib/cloud/seed/nocloud-net/user-data', userdata, 0o600),
             ('etc/cloud/ds-identify.cfg', 'policy: enabled\n', 0o644),
             ('etc/hostname', hostname + "\n", 0o644),
-            ('etc/hosts', HOSTS_CONTENT.format(hostname=hostname), 0o644),
+            # ('etc/hosts', HOSTS_CONTENT.format(hostname=hostname), 0o644),
             ]
 
     def configure_cloud_init(self):
